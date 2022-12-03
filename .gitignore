@@ -1,1 +1,4 @@
 **/*source* 
+**/*not_shared* 
+**/*.lyx
+**/*.tex

@@ -4,7 +4,7 @@ addpath('utils');
 m=model_deaton %create the model objects
 
 %% Solve the model with VFI
-if 0
+if 1
   fprintf('\nSolving %s with value function iterations:\n',m.label)
   tic
   m.solve_vfi;
@@ -65,7 +65,7 @@ end
 
 
 %% Flat simulated consumption path using retirement model without taste shocks
-if 1
+if 0
   m2=model_retirement;
   m2.ngridm=500;
   m2.df=1/(1+m2.r); %flat consumption hopefully

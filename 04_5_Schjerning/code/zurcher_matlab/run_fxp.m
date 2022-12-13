@@ -11,7 +11,7 @@ mp.n=90;
 
 %% Parameters for solution algorithm (mp.ap used in dpsolver.m)
 mp.ap.printfxp=2;	% (0= no output), (compressed output), (2= detailed iteraion output)
-mp.ap.sa_max=50000;	% Set minimum number of contraction steps (successive approximations)
+mp.ap.sa_max=500000;	% Set minimum number of contraction steps (successive approximations)
 mp.ap.sa_min=5;	% Set minimum number of contraction steps (successive approximations)
 
 mp.beta=0.9999;

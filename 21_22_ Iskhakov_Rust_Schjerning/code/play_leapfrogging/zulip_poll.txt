@@ -1,0 +1,3 @@
+/poll Should we invest now?
+Yes
+No

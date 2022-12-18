@@ -7,7 +7,7 @@ alpha=5;
 beta=-11;
 x_a=0.52;
 x_b=0.22;
-T=1000 % number of times game is played
+T=50 % number of times game is played
 
 for esr=1:3;  % loop over eqiulibrium to be selected in the data
 fprintf('Data generated from equilirbrium %d\n', esr);
@@ -17,7 +17,7 @@ fprintf('Data generated from equilirbrium %d\n', esr);
 % then the first feasible equilibrium is picked, i.e. min(neqb,esr).
 % Equilibria are sorted after ascending in p_a 
 
-nMC=500;  % number of MC reps
+nMC=1000;  % number of MC reps
 
 estimator='pml2step';
 % estimator='npl';
@@ -56,23 +56,23 @@ for iMC=1:nMC; % Loop over equilibria
 	
 	elseif strcmp(estimator,'pml2step');
     	logl=@(theta) sgame.logl_pml2step(d_a,d_b, x_a, x_b, theta(1), theta(2), phat_a, phat_b);
-    	[theta_hat(iMC,:), FVAL(iMC), converged(iMC)]=fminsearch(@(theta)-logl(theta), theta0); 	% Maximize likelihood function. 
+    	options= optimset('Display','off');
+    	[theta_hat(iMC,:), FVAL(iMC), converged(iMC)]=fminunc(@(theta)-logl(theta), theta0, options); 	% Maximize likelihood function. 
 	
 	elseif strcmp(estimator,'npl');
-			% step 1: estimate phat0
-			K=100;
-			x=nan(K,2);
-			for k=1:K;		% step 1: estimate phat0
-      	logl=@(theta) sgame.logl_pml2step(d_a,d_b, x_a, x_b, theta(1), theta(2), phat_a(k), phat_b(k));
-				[x(k+1,:), fval, EXITFLAG]=fminsearch(@(theta)-logl(theta), [alpha, beta]); 
-				phat_a(k+1)=br_a(phat_b(k));
-				phat_b(k+1)=br_b(phat_a(k));
+		K=100;
+		x=nan(K,2);
+		phat0=[phat_a(1),phat_b(1)];
+		for k=1:K;		% step 1: estimate phat0
+			[x(k+1,:), phat1, fval]=sgame.npl_step(d_a,d_b, x_a, x_b, phat0, theta0);
 				tolerance = max(abs(x(k+1,:)-x(k,:)));
-				if tolerance<0.05;
-		    	converged(iMC)=1;
-					break
-				end
+			phat0=phat1; 
+			theta0=x(k+1,:);
+			if tolerance<0.05;
+	    	converged(iMC)=1;
+				break
 			end
+		end
 
     	theta_hat(iMC,:)=x(k+1,:	);
     	FVAL(iMC)=fval;

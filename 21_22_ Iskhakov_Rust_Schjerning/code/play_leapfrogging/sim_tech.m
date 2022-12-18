@@ -23,7 +23,7 @@ for sim=1:sims;  % run many simulations
 
   stage=nstates;
   stepcount = nstates;
-
+  
   while (stepcount > 0);
 
     stepcount = stepcount-1;
@@ -32,26 +32,17 @@ for sim=1:sims;  % run many simulations
 
     % fprintf("%d %1.4f \n",stage,cgrid(end))
 
-    t=t+1;
-
-    kv=kf(c);
-
     % now draw next period state of the art cost, c (the exogenous state)
-
     if (deterministic_onestep);
 
       newstage=stage-1;
 
     else
 
-      if (laststage ~= stage);
-
-        cumprob=zeros(stage,1);
-        cumprob(1)=stp(1,stage);
-        for i=2:stage;
-          cumprob(i)=cumprob(i-1)+stp(i,stage);
-        end;
-
+      cumprob=zeros(stage,1);
+      cumprob(1)=stp(1,stage);
+      for i=2:stage;
+        cumprob(i)=cumprob(i-1)+stp(i,stage);
       end;
 
       u=rand(1,1);

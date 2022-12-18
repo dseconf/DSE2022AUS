@@ -20,7 +20,7 @@ fprintf('Data generated from equilirbrium %d\n', esr);
 nMC=1000;  % number of MC reps
 
 estimator='pml2step';
-% estimator='npl';
+estimator='npl';
 % estimator='mle';
 % estimator='mpec';
 

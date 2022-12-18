@@ -7,7 +7,7 @@ close all;
 setup;
 
 deterministic_onestep=0; % deterministic one step technology
-deadsteps=50;    % if there is no action for more than this number, invoke early termination of game
+deadsteps=100;    % if there is no action for more than this number, invoke early termination of game
 
 
 % plot
@@ -49,8 +49,13 @@ for sim=1:sims;  % run many simulations
       newstage=min(find(u < cumprob));
       
       if stage ~=newstage
-        stepcount = deadsteps;
+        if newstage==1
+          stepcount = 20;
+        else          
+          stepcount = deadsteps;
       end
+    end
+
 
     end;
 
